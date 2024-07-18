@@ -1,0 +1,448 @@
+{% extends "base.html" %}
+
+{% block title %}Onboarding{% endblock %}
+
+{% block head %}
+<style>
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .form-page {
+        display: none;
+    }
+    .form-page.active {
+        display: block;
+    }
+    button {
+        margin-top: 20px;
+    }
+    .btn-primary {
+        background-color: #AFB0F6;
+        border: none;
+    }
+    .btn-primary:hover {
+        background-color: #FF83A7;
+    }
+    .btn-secondary {
+        background-color: #FF83A7;
+        border: none;
+    }
+    .btn-secondary:hover {
+        background-color: #AFB0F6;
+    }
+    .btn-success {
+        background-color: #11113A;
+        border: none;
+    }
+    .btn-success:hover {
+        background-color: #AFB0F6;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form id="assessmentForm" action="{{ url_for('onboarding') }}" method="POST">
+        <!-- Page 1 -->
+        <div class="form-page active" id="page-1">
+            <div class="form-header">
+                <h2>Let us know you better</h2>
+            </div>
+            <div class="form-body">
+                <div class="form-group">
+                    <label for="firstName">First Name *</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" value="{{ first_name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name *</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" value="{{ last_name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ email }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number *</label>
+                    <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" required>
+                </div>
+                <div class="form-group">
+                    <label for="dob">When were you born? *</label>
+                    <div class="form-row">
+                        <div class="col">
+                            <select class="form-control" id="dobDay" name="dobDay" required>
+                                <option value="">Day</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select class="form-control" id="dobMonth" name="dobMonth" required>
+                                <option value="">Month</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select class="form-control" id="dobYear" name="dobYear" required>
+                                <option value="">Year</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Gender *</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="male" name="gender" value="male" required>
+                        <label class="form-check-label" for="male">Male</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="female" name="gender" value="female" required>
+                        <label class="form-check-label" for="female">Female</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="location">Where are you based? *</label>
+                    <input type="text" class="form-control" id="location" name="location" required>
+                </div>
+                <div class="form-footer">
+                    <button type="button" class="btn btn-primary" onclick="showPage(2)">Next</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2 -->
+        <div class="form-page" id="page-2">
+            <div class="form-header">
+                <h2>Give us a little history</h2>
+            </div>
+            <div class="form-body">
+                <div class="form-group">
+                    <label>Education Level *</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="highSchool" name="educationLevel" value="High School" required>
+                        <label class="form-check-label" for="highSchool">High School</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="bachelors" name="educationLevel" value="Bachelors" required>
+                        <label class="form-check-label" for="bachelors">Bachelors</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="masters" name="educationLevel" value="Masters" required>
+                        <label class="form-check-label" for="masters">Masters</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="phd" name="educationLevel" value="PhD" required>
+                        <label class="form-check-label" for="phd">PhD</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="otherEducation" name="educationLevel" value="Other" required>
+                        <label class="form-check-label" for="otherEducation">Other</label>
+                    </div>
+                </div>
+                <div class="form-group"> 
+                    <label>Current Employment Status *</label>
+                    <div id="employmentStatusContainer" class="form-check"></div>
+                </div>
+                <div class="form-group">
+                    <label for="careerExperience">Type of Career Experience *</label>
+                    <div id="careerExperienceContainer" class="form-check">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="addOption">Add Option</label>
+                        <input type="text" class="form-control" id="addOption" placeholder="Type here to add an option">
+                        <button type="button" class="btn btn-secondary mt-2" onclick="addCustomOption()">Add</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="linkedinUrl">LinkedIn URL</label>
+                    <input type="text" class="form-control" id="linkedinUrl" name="linkedinUrl">
+                </div>
+                <div class="form-group">
+                    <label for="entrepreneurialExperience">Entrepreneurial Experience (Number of Years) *</label>
+                    <input type="number" class="form-control" id="entrepreneurialExperience" name="entrepreneurialExperience" required>
+                </div>
+                <div class="form-group">
+                    <label for="previousStartups">Number of Previous Startups *</label>
+                    <input type="number" class="form-control" id="previousStartups" name="previousStartups" required>
+                </div>
+                <div class="form-group">
+                    <label for="currentStartups">Number of Current Startups/Projects *</label>
+                    <input type="number" class="form-control" id="currentStartups" name="currentStartups" required>
+                </div>
+                <div class="form-group">
+                    <label for="entrepreneurialExperienceType">Type of Entrepreneurial Experience *</label>
+                    <div id="entrepreneurialExperienceContainer" class="form-check">
+                        <!-- Checkboxes will be generated here -->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="startupRoles">Previously held startup roles *</label>
+                    <div id="startupRolesContainer" class="form-check">
+                        <!-- Checkboxes will be generated here -->
+                    </div>
+                </div>
+                <div class="form-footer">
+                    <button type="button" class="btn btn-secondary" onclick="showPage(1)">Back</button>
+                    <button type="button" class="btn btn-primary" onclick="showPage(3)">Next</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 3 -->
+        <div class="form-page" id="page-3">
+            <div class="form-header">
+                <h2>Tell us about your Startup</h2>
+            </div>
+            <div class="form-body">
+                <div class="form-group">
+                    <label>Current Startup Stage *</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="preIdea" name="startupStage" value="Pre-Idea" required>
+                        <label class="form-check-label" for="preIdea">Pre-Idea: "I don't have an idea"</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="preLaunch" name="startupStage" value="Pre-Launch" required>
+                        <label class="form-check-label" for="preLaunch">Pre-Launch: "I am building my product/service"</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="postLaunch" name="startupStage" value="Post-Launch" required>
+                        <label class="form-check-label" for="postLaunch">Post-Launch: "I am perfecting my product/service"</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="growth" name="startupStage" value="Growth" required>
+                        <label class="form-check-label" for="growth">Growth: "I am scaling my product/service"</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="startupProjectName">Startup Project Name *</label>
+                    <input type="text" class="form-control" id="startupProjectName" name="startupProjectName" required>
+                </div>
+                <div class="form-group">
+                    <label for="firstChallenge">First Challenge *</label>
+                    <select class="form-control" id="firstChallenge" name="firstChallenge" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="secondChallenge">Second Challenge *</label>
+                    <select class="form-control" id="secondChallenge" name="secondChallenge" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="thirdChallenge">Third Challenge *</label>
+                    <select class="form-control" id="thirdChallenge" name="thirdChallenge" required></select>
+                </div>
+                <div class="form-footer">
+                    <button type="button" class="btn btn-secondary" onclick="showPage(2)">Back</button>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+    const employmentStatus = [
+        "Full-time", "Part-time", "Contracting", "Freelancing", 
+        "Self Employed", "Student", "Unemployed", "Other"
+    ];
+    const careerExperiences = [
+        "None", "Education", "Deep Technology", "Mental Health", "Finance", 
+        "Capital Markets", "Lifestyle", "Sustainability", "Agriculture", 
+        "Pharmaceutical", "Hospitality", "Retail", "Property", "Digital Assets", 
+        "Healthcare", "Engineering", "Legal", "Social", "Space", "Wellness", 
+        "Luxury", "Art", "Robotics", "Human Resources", "Gaming", "Media", 
+        "Ecommerce", "Marketing", "Graphic Design", "Machine Learning", 
+        "Telecommunications", "Military", "Science/Research", "Project Management", 
+        "SAAS"
+    ];
+    const entrepreneurialExperiences = [
+        "None", "Education", "Deep Technology", "Mental Health", "Finance", 
+        "Capital Markets", "Lifestyle", "Sustainability", "Agriculture", 
+        "Pharmaceutical", "Hospitality", "Retail", "Property", "Digital Assets", 
+        "Healthcare", "Engineering", "Legal", "Social", "Space", "Wellness", 
+        "Luxury", "Art", "Robotics", "Human Resources", "Gaming", "Media", 
+        "Ecommerce", "Marketing", "Graphic Design", "Machine Learning", 
+        "Telecommunications", "Military", "Science/Research", "Project Management", 
+        "SAAS"
+    ];
+    const startupRoles = [
+        "NONE", "CEO", "CTO", "CPO", "CFO", "CMO", "CSO", 
+        "Advisor", "Executive Director", "Managing Director", "Other"
+    ];
+
+    const challengesData = {
+        "Pre-idea": [
+            "Identifying Viable Opportunities",
+            "Information Overload",
+            "Uncertainty and Ambiguity",
+            "Time Management"
+        ],
+        "Pre-Launch": [
+            "Building a Prototype",
+            "Market Research",
+            "Fundraising",
+            "Team Building"
+        ],
+        "Post-Launch": [
+            "Scaling Operations",
+            "Customer Acquisition",
+            "Product Optimization",
+            "Market Penetration"
+        ],
+        "Growth": [
+            "International Expansion",
+            "Strategic Partnerships",
+            "Diversification",
+            "Sustainability"
+        ]
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+        populateOptions('employmentStatusContainer', employmentStatus, 'employmentStatus');
+        populateOptions('careerExperienceContainer', careerExperiences, 'careerExperience');
+        populateOptions('entrepreneurialExperienceContainer', entrepreneurialExperiences, 'entrepreneurialExperienceType');
+        populateOptions('startupRolesContainer', startupRoles, 'startupRoles');
+        populateDateOptions();
+    });
+
+    function populateOptions(containerId, options, name) {
+        const container = document.getElementById(containerId);
+        options.forEach(option => {
+            const id = `${containerId}${option.replace(/\s+/g, '')}`;
+            const checkbox = `
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="${id}" name="${name}" value="${option}">
+                    <label class="form-check-label" for="${id}">${option}</label>
+                </div>`;
+            container.insertAdjacentHTML('beforeend', checkbox);
+        });
+    }
+
+    function addCustomOption() {
+        const customOption = document.getElementById('addOption').value;
+        if (customOption.trim() !== '') {
+            careerExperiences.push(customOption);
+            const id = `careerExperienceContainer${customOption.replace(/\s+/g, '')}`;
+            const checkbox = `
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="${id}" name="careerExperience" value="${customOption}">
+                    <label class="form-check-label" for="${id}">${customOption}</label>
+                </div>`;
+            document.getElementById('careerExperienceContainer').insertAdjacentHTML('beforeend', checkbox);
+            document.getElementById('addOption').value = ''; 
+        }
+    }
+
+    function showPage(pageNumber) {
+        const currentPage = document.querySelector('.form-page.active');
+        const inputs = currentPage.querySelectorAll('input[required], select[required]');
+
+        let allFilled = true;
+        inputs.forEach(input => {
+            if (!input.value || (input.type === 'radio' && !document.querySelector(`input[name="${input.name}"]:checked`))) {
+                allFilled = false;
+            }
+        });
+
+        if (allFilled) {
+            const pages = document.querySelectorAll('.form-page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(`page-${pageNumber}`).classList.add('active');
+        } else {
+            alert('Please fill all the required fields before proceeding.');
+        }
+    }
+
+    document.getElementById('assessmentForm').addEventListener('submit', function(event) {
+        // Prevent default form submission
+        event.preventDefault();
+
+        const formData = new FormData(this);
+        for (let [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+        }
+
+        // Make an AJAX request to the Flask server
+        fetch(this.action, {
+            method: 'POST',
+            body: formData
+        }).then(response => {
+            if (response.ok) {
+                alert('Form submitted successfully!');
+                window.location.href = "{{ url_for('matching') }}";
+            } else {
+                throw new Error('Failed to submit form');
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+            alert('Error submitting form');
+        });
+    });
+
+    function populateDateOptions() {
+        const daySelect = document.getElementById('dobDay');
+        const monthSelect = document.getElementById('dobMonth');
+        const yearSelect = document.getElementById('dobYear');
+
+        for (let i = 1; i <= 31; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            daySelect.appendChild(option);
+        }
+
+        const months = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        months.forEach((month, index) => {
+            const option = document.createElement('option');
+            option.value = index + 1;
+            option.textContent = month;
+            monthSelect.appendChild(option);
+        });
+
+        const currentYear = new Date().getFullYear();
+        for (let i = currentYear; i >= 1900; i--) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            yearSelect.appendChild(option);
+        }
+    }
+
+    document.querySelectorAll('input[name="startupStage"]').forEach(input => {
+        input.addEventListener('change', function() {
+            loadChallenges(this.value);
+        });
+    });
+
+    const challengesByStage = {{ challenges_by_stage|tojson|safe }}; 
+
+    function loadChallenges(stage) {
+        const firstChallengeSelect = document.getElementById('firstChallenge');
+        const secondChallengeSelect = document.getElementById('secondChallenge');
+        const thirdChallengeSelect = document.getElementById('thirdChallenge');
+        
+        firstChallengeSelect.innerHTML = ''; 
+        secondChallengeSelect.innerHTML = ''; 
+        thirdChallengeSelect.innerHTML = ''; 
+
+        if (challengesByStage[stage]) {
+            challengesByStage[stage].forEach(challenge => {
+                const option = document.createElement('option');
+                option.value = challenge;
+                option.textContent = challenge;
+                firstChallengeSelect.appendChild(option);
+                secondChallengeSelect.appendChild(option.cloneNode(true));
+                thirdChallengeSelect.appendChild(option.cloneNode(true));
+            });
+        }
+    }
+</script>
+{% endblock %}

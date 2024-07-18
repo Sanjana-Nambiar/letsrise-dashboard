@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block head %}
+<style>
+
+    .homepage-container {
+        text-align: center;
+        background-color: var(--background-color);
+    }
+    .hero-section {
+        background-color: var(--primary-color);
+        color: var(--white-color);
+        padding: 3rem 2rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+    }
+    .hero-section h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    .hero-section p {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+    .hero-section .cta-button {
+        background-color: var(--accent-color);
+        color: var(--white-color);
+        padding: 1rem 2.5rem;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .hero-section .cta-button:hover {
+        background-color: var(--tertiary-color);
+    }
+    .stats {
+        margin-top: 2rem;
+    }
+    .stats h2 {
+        margin-bottom: 1rem;
+        font-size: 2rem;
+        color: var(--primary-color);
+    }
+    .stat-cards {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    .stat-card {
+        background-color: var(--white-color);
+        box-shadow: 0 0 10px var(--shadow-color);
+        padding: 2rem;
+        border-radius: 10px;
+        width: 30%;
+        min-width: 250px;
+        margin: 1rem;
+        transition: transform 0.3s, box-shadow 0.3s;
+        position: relative;
+    }
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 25px var(--shadow-color);
+    }
+    .stat-card h3 {
+        margin: 0;
+        font-size: 1.8rem;
+        color: var(--primary-color);
+    }
+    .stat-card p {
+        margin: 0;
+        font-size: 1.2rem;
+        color: var(--text-color);
+    }
+    .benefits {
+        margin-top: 2rem;
+    }
+    .benefits h2 {
+        margin-bottom: 1rem;
+        font-size: 2rem;
+        color: var(--primary-color);
+    }
+    .benefit-cards {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    .benefit-card {
+        background-color: var(--white-color);
+        box-shadow: 0 0 10px var(--shadow-color);
+        padding: 2rem 4rem;
+        border-radius: 10px;
+        width: 45%;
+        min-width: 250px;
+        margin: 1rem;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .benefit-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 25px var(--shadow-color);
+    }
+    .benefit-card h3 {
+        font-size: 1.8rem;
+        color: var(--primary-color);
+    }
+    .benefit-card p {
+        font-size: 1rem;
+        color: var(--text-color);
+    }
+    .videos {
+        margin-top: 2rem;
+    }
+    .videos h2 {
+        margin-bottom: 1rem;
+        font-size: 2rem;
+        color: var(--primary-color);
+    }
+    .video-container {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+    .video-container iframe {
+        width: 45%;
+        height: 315px;
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 0 10px var(--shadow-color);
+        margin: 1rem;
+    }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const stats = document.querySelectorAll('.stat-card h3');
+        stats.forEach(stat => {
+            const max = +stat.innerText.replace(/\D/g, '');
+            let count = 0;
+            const updateCount = () => {
+                const increment = max / 100;
+                if (count < max) {
+                    count += increment;
+                    stat.innerText = `${Math.ceil(count)}`;
+                    setTimeout(updateCount, 30);
+                } else {
+                    if (max < 20){
+                        stat.innerText = max;
+                    }
+                    else {
+                        stat.innerText = max + '+';
+                    }
+                }
+            };
+            updateCount();
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="homepage-container">
+    <div class="hero-section">
+        <h1>Welcome to LETSRISE</h1>
+        <p>Your journey to entrepreneurial success starts here.<br>Join our community and elevate your business to new heights!</p>
+        <button class="cta-button" onclick="window.location.href='/onboarding'">Get Started</button>
+    </div>
+    <div class="stats">
+        <h2>Platform Statistics</h2>
+        <div class="stat-cards">
+            <div class="stat-card">
+                <h3>15</h3>
+                <p>Traits</p>
+            </div>
+            <div class="stat-card">
+                <h3>1000</h3>
+                <p>Insights</p>
+            </div>
+            <div class="stat-card">
+                <h3>50+</h3>
+                <p>Consequences</p>
+            </div>
+            <div class="stat-card">
+                <h3>200+</h3>
+                <p>Decisions</p>
+            </div>
+            <div class="stat-card">
+                <h3>9</h3>
+                <p>Entrepreneur Pathways</p>
+            </div>
+            <div class="stat-card">
+                <h3>50+</h3>
+                <p>Industries</p>
+            </div>
+        </div>
+    </div>
+    <div class="benefits">
+        <h2>Benefits of Using LETSRISE</h2>
+        <div class="benefit-cards">
+            <div class="benefit-card">
+                <h3>Personalized Insights</h3>
+                <p>Get personalized insights based on your business goals and aspirations.</p>
+            </div>
+            <div class="benefit-card">
+                <h3>Community Support</h3>
+                <p>Join a community of like-minded entrepreneurs and get support and guidance.</p>
+            </div>
+            <div class="benefit-card">
+                <h3>Expert Advice</h3>
+                <p>Get expert advice from industry professionals to help you grow your business.</p>
+            </div>
+            <div class="benefit-card">
+                <h3>Resources</h3>
+                <p>Access a wide range of resources, tools, and templates to help you succeed.</p>
+            </div>
+        </div>
+    </div>
+    <div class="videos">
+        <h2>Learn More About Us</h2>
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/eHJnEHyyN1Y" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/7TWKKww-F30" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+{% endblock %}

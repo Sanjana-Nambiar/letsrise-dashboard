@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}Matching{% endblock %}
+
+{% block head %}
+<style>
+    .dropdown {
+        margin-bottom: 20px;
+    }
+
+    .results {
+        color: #111;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+      
+        margin-top: 20px;
+    }
+
+    .result-item {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .result-item:last-child {
+        border-bottom: none;
+    }
+
+    .result-item p {
+        margin: 0;
+    }
+
+    .introduce-button {
+        background-color: #AFB0F6;
+        border: none;
+        padding: 5px 10px;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .introduce-button:hover {
+        background-color: #FF83A7;
+    }
+
+    .extra-options {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .extra-options button {
+        margin: 10px;
+        background-color: #AFB0F6;
+        border: none;
+        padding: 10px 20px;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .extra-options button:hover {
+        background-color: #FF83A7;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>Find Matches</h1>
+<div class="dropdown">
+    <label for="type-dropdown">Select Type:</label>
+    <select id="type-dropdown">
+        <option value="business_partner">Business Partner</option>
+        <option value="mentor">Mentor</option>
+    </select>
+</div>
+<div class="dropdown">
+    <label for="industry-dropdown">Select Industry Experience:</label>
+    <select id="industry-dropdown">
+        {% for industry in industries %}
+            <option value="{{ industry }}">{{ industry }}</option>
+        {% endfor %}
+    </select>
+</div>
+<div class="results" id="results"></div> <br>
+<div class="extra-options">
+    <h6>Maximum matches displayed are 5. To discover more, visit the subscription page or improve your matching score.</h6>
+    <button onclick="window.location.href='/subscription'">Subscription Page</button>
+    <button onclick="window.location.href='/quiz'">Increase Confidence</button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Document is ready');
+
+        // Set default selections
+        document.getElementById('type-dropdown').value = 'business_partner';
+        document.getElementById('industry-dropdown').selectedIndex = 0;
+
+        document.getElementById('type-dropdown').addEventListener('change', fetchMatches);
+        document.getElementById('industry-dropdown').addEventListener('change', fetchMatches);
+
+        fetchMatches();
+
+        function fetchMatches() {
+            var selectedType = document.getElementById('type-dropdown').value;
+            var selectedIndustry = document.getElementById('industry-dropdown').value;
+
+            console.log('Selected Type:', selectedType);
+            console.log('Selected Industry:', selectedIndustry);
+
+            if (selectedType && selectedIndustry) {
+                fetch('{{ url_for("get_matches") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        type: selectedType,
+                        industry: selectedIndustry
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    var resultsDiv = document.getElementById('results');
+                    resultsDiv.innerHTML = '';
+
+                    console.log('Matches:', data);
+
+                    if (data.length > 0) {
+                        data.forEach(function(match, idx) {
+                            var resultItem = document.createElement('div');
+                            resultItem.classList.add('result-item');
+                            resultItem.innerHTML = `
+                                <p><strong>${match.name}</strong> - ${match.industry_experience} - ${match.entrepreneurial_experience} years of experience</p>
+                                <button class="introduce-button" data-name="${match.name}">Introduce</button>
+                            `;
+                            resultsDiv.appendChild(resultItem);
+                        });
+                    } else {
+                        resultsDiv.innerHTML = '<p>No matches found.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching matches:', error);
+                    var resultsDiv = document.getElementById('results');
+                    resultsDiv.innerHTML = `<p>${error.message}</p>`;
+                });
+            }
+        }
+
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('introduce-button')) {
+                var name = event.target.getAttribute('data-name');
+                alert('Introducing you to ' + name);
+                // Implement the introduction functionality here
+            }
+        });
+    });
+</script>
+{% endblock %}

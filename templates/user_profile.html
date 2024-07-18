@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}User Profile{% endblock %}
+
+{% block head %}
+<style>
+    .profile-container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .profile-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .profile-header h2 {
+        margin: 0;
+    }
+    .profile-section {
+        margin-bottom: 20px;
+    }
+    .profile-section h3 {
+        margin-bottom: 10px;
+    }
+    .profile-section p {
+        margin: 5px 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <h2>{{ user[0] }}</h2>
+        <p>{{ user[1] }}</p>
+    </div>
+
+    <div class="profile-section">
+        <h3>Personal Information</h3>
+        <p><strong>First Name:</strong> {{ onboarding[2] if onboarding else 'N/A' }}</p>
+        <p><strong>Last Name:</strong> {{ onboarding[3] if onboarding else 'N/A' }}</p>
+        <p><strong>Email:</strong> {{ onboarding[4] if onboarding else 'N/A' }}</p>
+        <p><strong>Phone Number:</strong> {{ onboarding[5] if onboarding else 'N/A' }}</p>
+        <p><strong>Date of Birth:</strong> {{ onboarding[6] if onboarding else 'N/A' }}</p>
+        <p><strong>Gender:</strong> {{ onboarding[7] if onboarding else 'N/A' }}</p>
+        <p><strong>Location:</strong> {{ onboarding[8] if onboarding else 'N/A' }}</p>
+    </div>
+
+    <div class="profile-section">
+        <h3>Education and Career</h3>
+        <p><strong>Education Level:</strong> {{ onboarding[9] if onboarding else 'N/A' }}</p>
+        <p><strong>Employment Status:</strong> {{ onboarding[10] if onboarding else 'N/A' }}</p>
+        <p><strong>Career Experience:</strong> {{ onboarding[11] if onboarding else 'N/A' }}</p>
+        <p><strong>LinkedIn URL:</strong> <a href="{{ onboarding[12] }}">{{ onboarding[12] if onboarding else 'N/A' }}</a></p>
+        <p><strong>Entrepreneurial Experience:</strong> {{ onboarding[13] if onboarding else 'N/A' }} years</p>
+        <p><strong>Previous Startups:</strong> {{ onboarding[14] if onboarding else 'N/A' }}</p>
+        <p><strong>Current Startups:</strong> {{ onboarding[15] if onboarding else 'N/A' }}</p>
+        <p><strong>Type of Entrepreneurial Experience:</strong> {{ onboarding[16] if onboarding else 'N/A' }}</p>
+        <p><strong>Startup Roles:</strong> {{ onboarding[17] if onboarding else 'N/A' }}</p>
+        <p><strong>Startup Stage:</strong> {{ onboarding[18] if onboarding else 'N/A' }}</p>
+    </div>
+
+    <div class="profile-section">
+        <h3>Startup Information</h3>
+        <p><strong>Startup Project Name:</strong> {{ onboarding[19] if onboarding else 'N/A' }}</p>
+        <p><strong>First Challenge:</strong> {{ onboarding[20] if onboarding else 'N/A' }}</p>
+        <p><strong>Second Challenge:</strong> {{ onboarding[21] if onboarding else 'N/A' }}</p>
+        <p><strong>Third Challenge:</strong> {{ onboarding[22] if onboarding else 'N/A' }}</p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Subscription{% endblock %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    .columns {
+        float: left;
+        width: 33.3%;
+        padding: 8px;
+    }
+    .price {
+        list-style-type: none;
+        border: 1px solid #eee;
+        margin: 0;
+        padding: 0;
+        transition: 0.3s;
+    }
+    .price:hover {
+        box-shadow: 0 8px 12px 0 rgba(0,0,0,0.2);
+    }
+    .price .header {
+        background-color: #11113A;
+        color: white;
+        font-size: 20px;
+        padding: 10px;
+        text-align: center;
+    }
+    .price li {
+        border-bottom: 1px solid #eee;
+        padding: 20px;
+        text-align: center;
+    }
+    .price .grey {
+        background-color: #eee;
+        font-size: 20px;
+    }
+    .button {
+        background-color: #E8AFF6;
+        border: none;
+        color: white;
+        padding: 10px 25px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 18px;
+        display: block;
+        margin: 0 auto;
+        width: 80%;
+    }
+    @media only screen and (max-width: 600px) {
+        .columns {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h2 style="text-align:center">Plans</h2>
+<p style="text-align:center">Choose the Right Mentorship Plan for Your Growth Journey!!</p>
+
+<div class="columns">
+    <ul class="price">
+        <li class="header">Free </li>
+        <li class="grey">Free</li>
+        <li>Basic mentor matching</li>
+        <li>Access to community mentors</li>
+        <li>Monthly check-ins</li>
+        <li>10 Credit Scores</li>
+        <li class="grey"><a href="#" class="button">Sign Up</a></li>
+    </ul>
+</div>
+
+<div class="columns">
+    <ul class="price">
+        <li class="header">Insights Tier</li>
+        <li class="grey">300$ / year</li>
+        <li>Advanced mentor matching</li>
+        <li>Access to expert mentors</li>
+        <li>Bi-weekly check-ins</li>
+        <li>40 Credit Scores</li>
+        <li class="grey"><a href="#" class="button">Sign Up</a></li>
+    </ul>
+</div>
+
+<div class="columns">
+    <ul class="price">
+        <li class="header">Insights + Growth Architect </li>
+        <li class="grey">Starting from 500$ /year</li>
+        <li>Customized mentor matching</li>
+        <li>Access to top industry mentors</li>
+        <li>Weekly check-ins</li>
+        <li>Unlimited Credit Score</li>
+        <li class="grey"><a href="#" class="button">Sign Up</a></li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function logout() {
+        window.location.href = "/logout";
+    }
+</script>
+{% endblock %}

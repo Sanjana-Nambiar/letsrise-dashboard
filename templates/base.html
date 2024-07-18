@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dashboard{% endblock %}</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <h1>
+                <a href="/homepage"><img src="{{ url_for('static', filename='assests/logo.png') }}" alt="Logo" class="logo" style="width: 150px; height: 25px;"></a>
+            </h1>
+            <div class="user-info">
+                <button class="btns" onclick="Confidence()">Increase Confidence</button>
+                <button class="btns" onclick="logout()">Logout</button>
+            </div>
+        </div>
+        <div class="content">
+            <div class="sidebar">
+                <a href="/matching"><i class="fas fa-book"></i>Find Talent</a>
+                <a href="/onboarding"><i class="fas fa-file-alt"></i>Onboarding</a>
+                <a href="/dashboard"><i class="fas fa-home"></i>Insights</a>
+                <a href="/quiz"><i class="fas fa-chart-line"></i>Increase confidence</a>
+                <a href="/user_profile"><i class="fas fa-user-friends"></i>User Profile</a>
+                <a href="/subscription"><i class="fas fa-file-pdf"></i>Subscription</a>
+            </div>
+            <div class="main-content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+        <div class="footer">
+            <p>&copy; 2024 LETSRISE. All rights reserved.</p>
+            <p><a href="https://www.linkedin.com/company/letsrise/">Contact Us</a></p>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function logout() {
+            window.location.href = "/logout";
+        }
+        function Confidence() {
+            window.location.href = "/quiz";
+        }
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

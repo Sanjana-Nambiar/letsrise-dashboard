@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 60%; 
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Register</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class="flashes">
+            {% for category, message in messages %}
+              <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        <form id="registerForm" method="post">
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="button" onclick="showTerms()">Register</button>
+        </form>
+        <p>Already have an account? <a href="/login">Login</a></p>
+    </div>
+
+    <!-- The Modal -->
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeTerms()">&times;</span>
+            <h2>Terms and Conditions</h2>
+            <p>
+                By registering for this platform, you agree to the collection and use of your data in accordance with the following terms:
+            </p>
+            <p>
+                We collect personal information such as your name, email address, and password to create and manage your account. This data is used to identify you and provide you with access to our services.
+            </p>
+            <p>
+                You own your data, and it is permission-based. You have the control to choose what information you share with us and others on the platform. We use your data to enhance your experience by providing personalized recommendations, which are validated by experts and approved by physicians.
+            </p>
+            <p>
+                We are committed to protecting your privacy and ensuring the security of your data. All data collection and processing activities comply with applicable laws and regulations.
+            </p>
+
+            <button type="button" onclick="acceptTerms()">I Accept</button>
+        </div>
+    </div>
+
+    <script>
+        function showTerms() {
+            document.getElementById('termsModal').style.display = "block";
+        }
+
+        function closeTerms() {
+            document.getElementById('termsModal').style.display = "none";
+        }
+
+        function acceptTerms() {
+            document.getElementById('termsModal').style.display = "none";
+            document.getElementById('registerForm').submit();
+        }
+    </script>
+</body>
+</html>
