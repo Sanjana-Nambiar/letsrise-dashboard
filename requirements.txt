@@ -1,0 +1,17 @@
+Flask
+dash
+dash-core-components
+dash-html-components
+pandas==2.0.3
+numpy==1.24.4
+plotly
+psycopg2-binary
+Flask-Login
+gspread
+oauth2client
+sql
+sshtunnel
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+google-api-python-client

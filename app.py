@@ -29,26 +29,15 @@ def read_questions_from_json(file_path):
 questions = read_questions_from_json('assessment_google_sheet.json')
 
 def get_db_connection():
-    id_letsrise_path = os.path.join(os.getcwd(), '..', 'id_letsrise')
-    server = SSHTunnelForwarder(
-        ('letsrise.myonline.works', 22),  # SSH server and port
-        ssh_username='ubuntu',  # SSH username
-        ssh_pkey="~/.ssh/id_letsrise",  # Path to the private key
-        remote_bind_address=('localhost', 5432)  # Database server and port
-    )
-
-    server.start()
-
     conn = psycopg2.connect(
         dbname='letsrise_v1',
         user='letsrise_intern',
         password='letsrise',
-        host='localhost',
-        port=server.local_bind_port  
+        host='localhost'
     )
-    return conn, server
+    return conn
+conn = get_db_connection()
 
-conn, server = get_db_connection()
 query1 = """
 SELECT * FROM public.user_info ui
 INNER JOIN public.assessment_entries ae ON ui.user_id = ae.user_id
@@ -564,4 +553,5 @@ def subscription():
     return render_template('subscription.html')
 
 if __name__ == '__main__':
-    server.run(debug=True)
+    server.run(debug=True, host='0.0.0.0')
+
